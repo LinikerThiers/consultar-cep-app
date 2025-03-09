@@ -11,21 +11,23 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     Future.delayed(Duration(seconds: 3), () {
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (_) => MyHomePage(title: 'Flutter Demo Home Page')),
-      );
+      if (mounted) {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+              builder: (_) => MyHomePage(title: 'Flutter Demo Home Page')),
+        );
+      }
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.amber[600], 
+      backgroundColor: Colors.amber[600],
       body: Center(
-        child: Image.asset('assets/images/consulta_cep_logo.png'), 
+        child: Image.asset('assets/images/consulta_cep_logo.png'),
       ),
     );
   }
