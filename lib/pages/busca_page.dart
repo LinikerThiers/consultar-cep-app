@@ -15,6 +15,7 @@ class _BuscaPageState extends State<BuscaPage> {
   final TextEditingController _estadoController = TextEditingController();
   final TextEditingController _cidadeController = TextEditingController();
   final TextEditingController _logradouroController = TextEditingController();
+  bool loading = false;
 
   @override
   Widget build(BuildContext context) {
