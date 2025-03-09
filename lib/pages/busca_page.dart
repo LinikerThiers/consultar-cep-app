@@ -204,24 +204,297 @@ class _BuscaPageState extends State<BuscaPage> {
                           width: double.infinity,
                           child: ElevatedButton(
                             style: ButtonStyle(
-                              backgroundColor: WidgetStateProperty.all<Color>(
-                                  Colors.blue), // Cor de fundo
+                              backgroundColor:
+                                  WidgetStateProperty.all<Color>(Colors.blue),
                             ),
                             onPressed: () {
                               if (_selectedOption == 'cep') {
                                 String cep = _cepController.text;
                                 print("Buscar CEP: $cep");
+                                showDialog(
+                                    context: context,
+                                    barrierDismissible: false,
+                                    builder: (BuildContext bc) {
+                                      return AlertDialog(
+                                        backgroundColor: Colors.amber[50],
+                                        title: Text(
+                                          "Resultado do CEP",
+                                          style: TextStyle(
+                                              color: Colors.blue[700]),
+                                        ),
+                                        content: SingleChildScrollView(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              Text(
+                                                "CEP: ",
+                                                style: TextStyle(
+                                                    color: Colors.blue[700]),
+                                              ),
+                                              SizedBox(height: 10),
+                                              Text(
+                                                "Logradouro: ",
+                                                style: TextStyle(
+                                                    color: Colors.blue[700]),
+                                              ),
+                                              SizedBox(height: 10),
+                                              Text(
+                                                "Complemento: ",
+                                                style: TextStyle(
+                                                    color: Colors.blue[700]),
+                                              ),
+                                              SizedBox(height: 10),
+                                              Text(
+                                                "Unidade: ",
+                                                style: TextStyle(
+                                                    color: Colors.blue[700]),
+                                              ),
+                                              SizedBox(height: 10),
+                                              Text(
+                                                "Bairro: ",
+                                                style: TextStyle(
+                                                    color: Colors.blue[700]),
+                                              ),
+                                              SizedBox(height: 10),
+                                              Text(
+                                                "Localidade: ",
+                                                style: TextStyle(
+                                                    color: Colors.blue[700]),
+                                              ),
+                                              SizedBox(height: 10),
+                                              Text(
+                                                "UF: ",
+                                                style: TextStyle(
+                                                    color: Colors.blue[700]),
+                                              ),
+                                              SizedBox(height: 10),
+                                              Text(
+                                                "Estado: ",
+                                                style: TextStyle(
+                                                    color: Colors.blue[700]),
+                                              ),
+                                              SizedBox(height: 10),
+                                              Text(
+                                                "Região: ",
+                                                style: TextStyle(
+                                                    color: Colors.blue[700]),
+                                              ),
+                                              SizedBox(height: 10),
+                                              Text(
+                                                "IBGE: ",
+                                                style: TextStyle(
+                                                    color: Colors.blue[700]),
+                                              ),
+                                              SizedBox(height: 10),
+                                              Text(
+                                                "GIA: ",
+                                                style: TextStyle(
+                                                    color: Colors.blue[700]),
+                                              ),
+                                              SizedBox(height: 10),
+                                              Text(
+                                                "DDD: ",
+                                                style: TextStyle(
+                                                    color: Colors.blue[700]),
+                                              ),
+                                              SizedBox(height: 10),
+                                              Text(
+                                                "SIAFI: ",
+                                                style: TextStyle(
+                                                    color: Colors.blue[700]),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        actions: [
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              TextButton(
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                child: Text(
+                                                  "Fechar",
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.red,
+                                                  ),
+                                                ),
+                                              ),
+                                              TextButton(
+                                                onPressed: () {},
+                                                style: ButtonStyle(
+                                                  backgroundColor:
+                                                      WidgetStateProperty.all<
+                                                              Color>(
+                                                          Colors.blue.shade600),
+                                                ),
+                                                child: Text(
+                                                  "Salvar",
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      );
+                                    });
                               } else {
                                 String uf = _estadoController.text;
                                 String cidade = _cidadeController.text;
                                 String logradouro = _logradouroController.text;
-                                print("Buscar Cidade: $uf, $cidade, $logradouro");
+                                print(
+                                    "Buscar Cidade: $uf, $cidade, $logradouro");
+                                showDialog(
+                                    context: context,
+                                    barrierDismissible: false,
+                                    builder: (BuildContext bc) {
+                                      return AlertDialog(
+                                        backgroundColor: Colors.amber[50],
+                                        title: Text(
+                                          "Resultado do CEP",
+                                          style: TextStyle(
+                                              color: Colors.blue[700]),
+                                        ),
+                                        content: SingleChildScrollView(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              Text(
+                                                "CEP: ",
+                                                style: TextStyle(
+                                                    color: Colors.blue[700]),
+                                              ),
+                                              SizedBox(height: 10),
+                                              Text(
+                                                "Logradouro: ",
+                                                style: TextStyle(
+                                                    color: Colors.blue[700]),
+                                              ),
+                                              SizedBox(height: 10),
+                                              Text(
+                                                "Complemento: ",
+                                                style: TextStyle(
+                                                    color: Colors.blue[700]),
+                                              ),
+                                              SizedBox(height: 10),
+                                              Text(
+                                                "Unidade: ",
+                                                style: TextStyle(
+                                                    color: Colors.blue[700]),
+                                              ),
+                                              SizedBox(height: 10),
+                                              Text(
+                                                "Bairro: ",
+                                                style: TextStyle(
+                                                    color: Colors.blue[700]),
+                                              ),
+                                              SizedBox(height: 10),
+                                              Text(
+                                                "Localidade: ",
+                                                style: TextStyle(
+                                                    color: Colors.blue[700]),
+                                              ),
+                                              SizedBox(height: 10),
+                                              Text(
+                                                "UF: ",
+                                                style: TextStyle(
+                                                    color: Colors.blue[700]),
+                                              ),
+                                              SizedBox(height: 10),
+                                              Text(
+                                                "Estado: ",
+                                                style: TextStyle(
+                                                    color: Colors.blue[700]),
+                                              ),
+                                              SizedBox(height: 10),
+                                              Text(
+                                                "Região: ",
+                                                style: TextStyle(
+                                                    color: Colors.blue[700]),
+                                              ),
+                                              SizedBox(height: 10),
+                                              Text(
+                                                "IBGE: ",
+                                                style: TextStyle(
+                                                    color: Colors.blue[700]),
+                                              ),
+                                              SizedBox(height: 10),
+                                              Text(
+                                                "GIA: ",
+                                                style: TextStyle(
+                                                    color: Colors.blue[700]),
+                                              ),
+                                              SizedBox(height: 10),
+                                              Text(
+                                                "DDD: ",
+                                                style: TextStyle(
+                                                    color: Colors.blue[700]),
+                                              ),
+                                              SizedBox(height: 10),
+                                              Text(
+                                                "SIAFI: ",
+                                                style: TextStyle(
+                                                    color: Colors.blue[700]),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        actions: [
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              TextButton(
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                child: Text(
+                                                  "Fechar",
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.red,
+                                                  ),
+                                                ),
+                                              ),
+                                              TextButton(
+                                                onPressed: () {},
+                                                style: ButtonStyle(
+                                                  backgroundColor:
+                                                      WidgetStateProperty.all<
+                                                              Color>(
+                                                          Colors.blue.shade600),
+                                                ),
+                                                child: Text(
+                                                  "Salvar",
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      );
+                                    });
                               }
                             },
-                            child: Text("Buscar", style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold
-                            ),),
+                            child: Text(
+                              "Buscar",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold),
+                            ),
                           ),
                         ),
                       ],
