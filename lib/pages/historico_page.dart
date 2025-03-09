@@ -11,7 +11,10 @@ class _HistoricoPageState extends State<HistoricoPage> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(child: Scaffold(
-      body: Container(),
+      backgroundColor: Colors.white,
+      body: Container(
+        
+      ),
     ));
   }
 }
