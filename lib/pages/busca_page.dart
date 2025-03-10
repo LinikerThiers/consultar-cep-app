@@ -1,5 +1,6 @@
 import 'package:consultarcep/model/viacep_model.dart';
 import 'package:consultarcep/repository/viacep_repository.dart';
+import 'package:consultarcep/shared/widget/result_dialog.dart';
 import 'package:flutter/material.dart';
 
 class BuscaPage extends StatefulWidget {
@@ -20,92 +21,6 @@ class _BuscaPageState extends State<BuscaPage> {
   bool loading = false;
   var viaCEPModel = ViaCEPModel();
   var viaCEPRepository = ViaCEPRepository();
-
-  Widget _buildResultDialog(dynamic result) {
-    List<ViaCEPModel> enderecos =
-        (result is List<ViaCEPModel>) ? result : [result];
-
-    return AlertDialog(
-      backgroundColor: Colors.amber[50],
-      title: Text(
-        enderecos.length == 1 ? "Resultado do CEP" : "Resultados encontrados",
-        style: TextStyle(color: Colors.blue[700], fontWeight: FontWeight.bold),
-      ),
-      content: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: enderecos.map((endereco) {
-            return Card(
-              color: Colors.blue[700],
-              margin: EdgeInsets.only(bottom: 20),
-              elevation: 4,
-              child: Padding(
-                padding: EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Align(
-                      alignment: Alignment.topRight,
-                      child: TextButton(
-                        child: Text(
-                          "Salvar",
-                          style: TextStyle(
-                              color: Colors.white, fontWeight: FontWeight.bold),
-                        ),
-                        onPressed: () {
-                          _salvarEndereco(endereco);
-                        },
-                      ),
-                    ),
-                    Text("CEP: ${endereco.cep}",
-                        style: TextStyle(color: Colors.white)),
-                    SizedBox(height: 10),
-                    Text("Logradouro: ${endereco.logradouro}",
-                        style: TextStyle(color: Colors.white)),
-                    SizedBox(height: 10),
-                    Text("Complemento: ${endereco.complemento}",
-                        style: TextStyle(color: Colors.white)),
-                    SizedBox(height: 10),
-                    Text("Bairro: ${endereco.bairro}",
-                        style: TextStyle(color: Colors.white)),
-                    SizedBox(height: 10),
-                    Text("Localidade: ${endereco.localidade}",
-                        style: TextStyle(color: Colors.white)),
-                    SizedBox(height: 10),
-                    Text("UF: ${endereco.uf}",
-                        style: TextStyle(color: Colors.white)),
-                    SizedBox(height: 10),
-                    Text("IBGE: ${endereco.ibge}",
-                        style: TextStyle(color: Colors.white)),
-                    SizedBox(height: 10),
-                    Text("DDD: ${endereco.ddd}",
-                        style: TextStyle(color: Colors.white)),
-                  ],
-                ),
-              ),
-            );
-          }).toList(),
-        ),
-      ),
-      actions: [
-        TextButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          child: Text(
-            "Fechar",
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              color: Colors.red,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  void _salvarEndereco(ViaCEPModel endereco) {}
 
   @override
   Widget build(BuildContext context) {
@@ -164,7 +79,7 @@ class _BuscaPageState extends State<BuscaPage> {
                               fillColor: WidgetStateProperty.resolveWith<Color>(
                                   (states) {
                                 if (states.contains(WidgetState.selected)) {
-                                  return Colors.blue;
+                                  return Colors.blue.shade700;
                                 }
                                 return Colors.blue.shade100;
                               }),
@@ -172,7 +87,7 @@ class _BuscaPageState extends State<BuscaPage> {
                             Text(
                               "Buscar por CEP",
                               style: TextStyle(
-                                  color: Colors.blue,
+                                  color: Colors.blue[700],
                                   fontWeight: FontWeight.w800),
                             ),
                             SizedBox(width: 20),
@@ -187,7 +102,7 @@ class _BuscaPageState extends State<BuscaPage> {
                               fillColor: WidgetStateProperty.resolveWith<Color>(
                                   (states) {
                                 if (states.contains(WidgetState.selected)) {
-                                  return Colors.blue;
+                                  return Colors.blue.shade700;
                                 }
                                 return Colors.blue.shade100;
                               }),
@@ -195,7 +110,7 @@ class _BuscaPageState extends State<BuscaPage> {
                             Text(
                               "Buscar por Cidade",
                               style: TextStyle(
-                                  color: Colors.blue,
+                                  color: Colors.blue[700],
                                   fontWeight: FontWeight.w800),
                             ),
                           ],
@@ -206,7 +121,7 @@ class _BuscaPageState extends State<BuscaPage> {
                             controller: _cepController,
                             keyboardType: TextInputType.number,
                             style: TextStyle(
-                              color: Colors.blue[600],
+                              color: Colors.blue[700],
                               fontSize: 16,
                             ),
                             decoration: InputDecoration(
@@ -223,7 +138,7 @@ class _BuscaPageState extends State<BuscaPage> {
                               ),
                               hintText: "CEP",
                               hintStyle: TextStyle(
-                                color: Colors.blueAccent,
+                                color: Colors.blue[700],
                               ),
                             ),
                           ),
@@ -233,7 +148,7 @@ class _BuscaPageState extends State<BuscaPage> {
                               TextField(
                                 controller: _estadoController,
                                 style: TextStyle(
-                                  color: Colors.blue[600],
+                                  color: Colors.blue[700],
                                   fontSize: 16,
                                 ),
                                 decoration: InputDecoration(
@@ -246,11 +161,11 @@ class _BuscaPageState extends State<BuscaPage> {
                                   ),
                                   prefixIcon: Icon(
                                     Icons.location_on_outlined,
-                                    color: Colors.blueAccent,
+                                    color: Colors.blue[700],
                                   ),
                                   hintText: "Estado (UF)",
                                   hintStyle: TextStyle(
-                                    color: Colors.blueAccent,
+                                    color: Colors.blue[700],
                                   ),
                                 ),
                               ),
@@ -258,7 +173,7 @@ class _BuscaPageState extends State<BuscaPage> {
                               TextField(
                                 controller: _cidadeController,
                                 style: TextStyle(
-                                  color: Colors.blue[600],
+                                  color: Colors.blue[700],
                                   fontSize: 16,
                                 ),
                                 decoration: InputDecoration(
@@ -275,7 +190,7 @@ class _BuscaPageState extends State<BuscaPage> {
                                   ),
                                   hintText: "Cidade",
                                   hintStyle: TextStyle(
-                                    color: Colors.blueAccent,
+                                    color: Colors.blue[700],
                                   ),
                                 ),
                               ),
@@ -283,7 +198,7 @@ class _BuscaPageState extends State<BuscaPage> {
                               TextField(
                                 controller: _logradouroController,
                                 style: TextStyle(
-                                  color: Colors.blue[600],
+                                  color: Colors.blue[700],
                                   fontSize: 16,
                                 ),
                                 decoration: InputDecoration(
@@ -296,11 +211,11 @@ class _BuscaPageState extends State<BuscaPage> {
                                   ),
                                   prefixIcon: Icon(
                                     Icons.home_filled,
-                                    color: Colors.blueAccent,
+                                    color: Colors.blue[700],
                                   ),
                                   hintText: "Logradouro (Rua)",
                                   hintStyle: TextStyle(
-                                    color: Colors.blueAccent,
+                                    color: Colors.blue[700],
                                   ),
                                 ),
                               ),
@@ -311,8 +226,8 @@ class _BuscaPageState extends State<BuscaPage> {
                           width: double.infinity,
                           child: ElevatedButton(
                             style: ButtonStyle(
-                              backgroundColor:
-                                  WidgetStateProperty.all<Color>(Colors.blue),
+                              backgroundColor: WidgetStateProperty.all<Color>(
+                                  Colors.blue.shade700),
                             ),
                             onPressed: () async {
                               if (_selectedOption == 'cep') {
@@ -331,7 +246,8 @@ class _BuscaPageState extends State<BuscaPage> {
                                       context: context,
                                       barrierDismissible: false,
                                       builder: (BuildContext bc) {
-                                        return _buildResultDialog(viaCEPModel);
+                                        return ResultDialog(
+                                            result: viaCEPModel);
                                       },
                                     );
                                   } catch (e) {
@@ -339,15 +255,26 @@ class _BuscaPageState extends State<BuscaPage> {
                                       context: context,
                                       builder: (BuildContext bc) {
                                         return AlertDialog(
-                                          title: Text("Erro"),
+                                          title: Text(
+                                            "Erro",
+                                            style: TextStyle(
+                                                color: Colors.blue[700]),
+                                          ),
                                           content: Text(
-                                              "Não foi possível consultar o CEP: $e"),
+                                            "Não foi possível consultar o CEP: $e",
+                                            style: TextStyle(
+                                                color: Colors.blue[700]),
+                                          ),
                                           actions: [
                                             TextButton(
                                               onPressed: () {
                                                 Navigator.pop(context);
                                               },
-                                              child: Text("OK"),
+                                              child: Text(
+                                                "OK",
+                                                style: TextStyle(
+                                                    color: Colors.blue[700]),
+                                              ),
                                             ),
                                           ],
                                         );
@@ -363,15 +290,26 @@ class _BuscaPageState extends State<BuscaPage> {
                                     context: context,
                                     builder: (BuildContext bc) {
                                       return AlertDialog(
-                                        title: Text("CEP inválido"),
+                                        title: Text(
+                                          "CEP inválido",
+                                          style: TextStyle(
+                                              color: Colors.blue[700]),
+                                        ),
                                         content: Text(
-                                            "O CEP deve conter exatamente 8 dígitos."),
+                                          "O CEP deve conter exatamente 8 dígitos.",
+                                          style: TextStyle(
+                                              color: Colors.blue[700]),
+                                        ),
                                         actions: [
                                           TextButton(
                                             onPressed: () {
                                               Navigator.pop(context);
                                             },
-                                            child: Text("OK"),
+                                            child: Text(
+                                              "OK",
+                                              style: TextStyle(
+                                                  color: Colors.blue[700]),
+                                            ),
                                           ),
                                         ],
                                       );
@@ -394,11 +332,12 @@ class _BuscaPageState extends State<BuscaPage> {
                                   List<ViaCEPModel> enderecos =
                                       await viaCEPRepository.consultarPorCidade(
                                           uf, cidade, logradouro);
+
                                   showDialog(
                                     context: context,
                                     barrierDismissible: false,
                                     builder: (BuildContext bc) {
-                                      return _buildResultDialog(enderecos);
+                                      return ResultDialog(result: enderecos);
                                     },
                                   );
                                 } catch (e) {
@@ -406,15 +345,26 @@ class _BuscaPageState extends State<BuscaPage> {
                                     context: context,
                                     builder: (BuildContext bc) {
                                       return AlertDialog(
-                                        title: Text("Erro"),
+                                        title: Text(
+                                          "Erro",
+                                          style: TextStyle(
+                                              color: Colors.blue[700]),
+                                        ),
                                         content: Text(
-                                            "Não foi possível consultar o endereço: $e"),
+                                          "Não foi possível consultar o endereço: $e",
+                                          style: TextStyle(
+                                              color: Colors.blue[700]),
+                                        ),
                                         actions: [
                                           TextButton(
                                             onPressed: () {
                                               Navigator.pop(context);
                                             },
-                                            child: Text("OK"),
+                                            child: Text(
+                                              "OK",
+                                              style: TextStyle(
+                                                  color: Colors.blue[700]),
+                                            ),
                                           ),
                                         ],
                                       );
