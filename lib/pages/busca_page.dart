@@ -29,7 +29,7 @@ class _BuscaPageState extends State<BuscaPage> {
       backgroundColor: Colors.amber[50],
       title: Text(
         enderecos.length == 1 ? "Resultado do CEP" : "Resultados encontrados",
-        style: TextStyle(color: Colors.blue[700]),
+        style: TextStyle(color: Colors.blue[700], fontWeight: FontWeight.bold),
       ),
       content: SingleChildScrollView(
         child: Column(
@@ -37,6 +37,7 @@ class _BuscaPageState extends State<BuscaPage> {
           mainAxisSize: MainAxisSize.min,
           children: enderecos.map((endereco) {
             return Card(
+              color: Colors.blue[700],
               margin: EdgeInsets.only(bottom: 20),
               elevation: 4,
               child: Padding(
@@ -46,36 +47,40 @@ class _BuscaPageState extends State<BuscaPage> {
                   children: [
                     Align(
                       alignment: Alignment.topRight,
-                      child: IconButton(
-                        icon: Icon(Icons.save, color: Colors.blue[700]),
+                      child: TextButton(
+                        child: Text(
+                          "Salvar",
+                          style: TextStyle(
+                              color: Colors.white, fontWeight: FontWeight.bold),
+                        ),
                         onPressed: () {
                           _salvarEndereco(endereco);
                         },
                       ),
                     ),
                     Text("CEP: ${endereco.cep}",
-                        style: TextStyle(color: Colors.blue[700])),
+                        style: TextStyle(color: Colors.white)),
                     SizedBox(height: 10),
                     Text("Logradouro: ${endereco.logradouro}",
-                        style: TextStyle(color: Colors.blue[700])),
+                        style: TextStyle(color: Colors.white)),
                     SizedBox(height: 10),
                     Text("Complemento: ${endereco.complemento}",
-                        style: TextStyle(color: Colors.blue[700])),
+                        style: TextStyle(color: Colors.white)),
                     SizedBox(height: 10),
                     Text("Bairro: ${endereco.bairro}",
-                        style: TextStyle(color: Colors.blue[700])),
+                        style: TextStyle(color: Colors.white)),
                     SizedBox(height: 10),
                     Text("Localidade: ${endereco.localidade}",
-                        style: TextStyle(color: Colors.blue[700])),
+                        style: TextStyle(color: Colors.white)),
                     SizedBox(height: 10),
                     Text("UF: ${endereco.uf}",
-                        style: TextStyle(color: Colors.blue[700])),
+                        style: TextStyle(color: Colors.white)),
                     SizedBox(height: 10),
                     Text("IBGE: ${endereco.ibge}",
-                        style: TextStyle(color: Colors.blue[700])),
+                        style: TextStyle(color: Colors.white)),
                     SizedBox(height: 10),
                     Text("DDD: ${endereco.ddd}",
-                        style: TextStyle(color: Colors.blue[700])),
+                        style: TextStyle(color: Colors.white)),
                   ],
                 ),
               ),
