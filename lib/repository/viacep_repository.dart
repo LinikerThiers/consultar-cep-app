@@ -9,10 +9,10 @@ class ViaCEPRepository {
     return viaCepModel;
   }
 
-  Future<ViaCEPModel> consultarPorCidade(String uf, String cidade, String logradouro) async {
+  Future<List<ViaCEPModel>> consultarPorCidade(String uf, String cidade, String logradouro) async {
     var dio = Dio();
     var result = await dio.get("https://viacep.com.br/ws/$uf/$cidade/$logradouro/json/");
-    var viaCepModel = ViaCEPModel.fromJson(result.data);
+    List<ViaCEPModel> viaCepModel = (result.data as List).map((json) => ViaCEPModel.fromJson(json)).toList();
     return viaCepModel;
   }
 }

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class HistoricoPage extends StatefulWidget {
-  const HistoricoPage({super.key});
+class SalvosPage extends StatefulWidget {
+  const SalvosPage({super.key});
 
   @override
-  State<HistoricoPage> createState() => _HistoricoPageState();
+  State<SalvosPage> createState() => _SalvosPageState();
 }
 
-class _HistoricoPageState extends State<HistoricoPage> {
+class _SalvosPageState extends State<SalvosPage> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(child: Scaffold(

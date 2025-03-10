@@ -1,3 +1,5 @@
+import 'package:consultarcep/model/viacep_model.dart';
+import 'package:consultarcep/repository/viacep_repository.dart';
 import 'package:flutter/material.dart';
 
 class BuscaPage extends StatefulWidget {
@@ -16,6 +18,89 @@ class _BuscaPageState extends State<BuscaPage> {
   final TextEditingController _cidadeController = TextEditingController();
   final TextEditingController _logradouroController = TextEditingController();
   bool loading = false;
+  var viaCEPModel = ViaCEPModel();
+  var viaCEPRepository = ViaCEPRepository();
+
+  Widget _buildResultDialog(dynamic result) {
+    List<ViaCEPModel> enderecos =
+        (result is List<ViaCEPModel>) ? result : [result];
+
+    return AlertDialog(
+      backgroundColor: Colors.amber[50],
+      title: Text(
+        enderecos.length == 1 ? "Resultado do CEP" : "Resultados encontrados",
+        style: TextStyle(color: Colors.blue[700]),
+      ),
+      content: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: enderecos.map((endereco) {
+            return Card(
+              margin: EdgeInsets.only(bottom: 20),
+              elevation: 4,
+              child: Padding(
+                padding: EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Align(
+                      alignment: Alignment.topRight,
+                      child: IconButton(
+                        icon: Icon(Icons.save, color: Colors.blue[700]),
+                        onPressed: () {
+                          _salvarEndereco(endereco);
+                        },
+                      ),
+                    ),
+                    Text("CEP: ${endereco.cep}",
+                        style: TextStyle(color: Colors.blue[700])),
+                    SizedBox(height: 10),
+                    Text("Logradouro: ${endereco.logradouro}",
+                        style: TextStyle(color: Colors.blue[700])),
+                    SizedBox(height: 10),
+                    Text("Complemento: ${endereco.complemento}",
+                        style: TextStyle(color: Colors.blue[700])),
+                    SizedBox(height: 10),
+                    Text("Bairro: ${endereco.bairro}",
+                        style: TextStyle(color: Colors.blue[700])),
+                    SizedBox(height: 10),
+                    Text("Localidade: ${endereco.localidade}",
+                        style: TextStyle(color: Colors.blue[700])),
+                    SizedBox(height: 10),
+                    Text("UF: ${endereco.uf}",
+                        style: TextStyle(color: Colors.blue[700])),
+                    SizedBox(height: 10),
+                    Text("IBGE: ${endereco.ibge}",
+                        style: TextStyle(color: Colors.blue[700])),
+                    SizedBox(height: 10),
+                    Text("DDD: ${endereco.ddd}",
+                        style: TextStyle(color: Colors.blue[700])),
+                  ],
+                ),
+              ),
+            );
+          }).toList(),
+        ),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          child: Text(
+            "Fechar",
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Colors.red,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  void _salvarEndereco(ViaCEPModel endereco) {}
 
   @override
   Widget build(BuildContext context) {
@@ -115,6 +200,10 @@ class _BuscaPageState extends State<BuscaPage> {
                           TextField(
                             controller: _cepController,
                             keyboardType: TextInputType.number,
+                            style: TextStyle(
+                              color: Colors.blue[600],
+                              fontSize: 16,
+                            ),
                             decoration: InputDecoration(
                               filled: true,
                               fillColor: Colors.amber[50],
@@ -138,6 +227,10 @@ class _BuscaPageState extends State<BuscaPage> {
                             children: [
                               TextField(
                                 controller: _estadoController,
+                                style: TextStyle(
+                                  color: Colors.blue[600],
+                                  fontSize: 16,
+                                ),
                                 decoration: InputDecoration(
                                   filled: true,
                                   fillColor: Colors.amber[50],
@@ -159,6 +252,10 @@ class _BuscaPageState extends State<BuscaPage> {
                               SizedBox(height: 10),
                               TextField(
                                 controller: _cidadeController,
+                                style: TextStyle(
+                                  color: Colors.blue[600],
+                                  fontSize: 16,
+                                ),
                                 decoration: InputDecoration(
                                   filled: true,
                                   fillColor: Colors.amber[50],
@@ -180,6 +277,10 @@ class _BuscaPageState extends State<BuscaPage> {
                               SizedBox(height: 10),
                               TextField(
                                 controller: _logradouroController,
+                                style: TextStyle(
+                                  color: Colors.blue[600],
+                                  fontSize: 16,
+                                ),
                                 decoration: InputDecoration(
                                   filled: true,
                                   fillColor: Colors.amber[50],
@@ -208,294 +309,134 @@ class _BuscaPageState extends State<BuscaPage> {
                               backgroundColor:
                                   WidgetStateProperty.all<Color>(Colors.blue),
                             ),
-                            onPressed: () {
+                            onPressed: () async {
                               if (_selectedOption == 'cep') {
-                                String cep = _cepController.text;
-                                print("Buscar CEP: $cep");
-                                showDialog(
+                                String cep = _cepController.text
+                                    .replaceAll(RegExp(r'[^0-9]'), '');
+                                if (cep.length == 8) {
+                                  setState(() {
+                                    loading = true;
+                                  });
+
+                                  try {
+                                    viaCEPModel = await viaCEPRepository
+                                        .consultarPorCep(cep);
+
+                                    showDialog(
+                                      context: context,
+                                      barrierDismissible: false,
+                                      builder: (BuildContext bc) {
+                                        return _buildResultDialog(viaCEPModel);
+                                      },
+                                    );
+                                  } catch (e) {
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext bc) {
+                                        return AlertDialog(
+                                          title: Text("Erro"),
+                                          content: Text(
+                                              "Não foi possível consultar o CEP: $e"),
+                                          actions: [
+                                            TextButton(
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                              child: Text("OK"),
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
+                                  } finally {
+                                    setState(() {
+                                      loading = false;
+                                    });
+                                  }
+                                } else {
+                                  showDialog(
                                     context: context,
-                                    barrierDismissible: false,
                                     builder: (BuildContext bc) {
                                       return AlertDialog(
-                                        backgroundColor: Colors.amber[50],
-                                        title: Text(
-                                          "Resultado do CEP",
-                                          style: TextStyle(
-                                              color: Colors.blue[700]),
-                                        ),
-                                        content: SingleChildScrollView(
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              Text(
-                                                "CEP: ",
-                                                style: TextStyle(
-                                                    color: Colors.blue[700]),
-                                              ),
-                                              SizedBox(height: 10),
-                                              Text(
-                                                "Logradouro: ",
-                                                style: TextStyle(
-                                                    color: Colors.blue[700]),
-                                              ),
-                                              SizedBox(height: 10),
-                                              Text(
-                                                "Complemento: ",
-                                                style: TextStyle(
-                                                    color: Colors.blue[700]),
-                                              ),
-                                              SizedBox(height: 10),
-                                              Text(
-                                                "Unidade: ",
-                                                style: TextStyle(
-                                                    color: Colors.blue[700]),
-                                              ),
-                                              SizedBox(height: 10),
-                                              Text(
-                                                "Bairro: ",
-                                                style: TextStyle(
-                                                    color: Colors.blue[700]),
-                                              ),
-                                              SizedBox(height: 10),
-                                              Text(
-                                                "Localidade: ",
-                                                style: TextStyle(
-                                                    color: Colors.blue[700]),
-                                              ),
-                                              SizedBox(height: 10),
-                                              Text(
-                                                "UF: ",
-                                                style: TextStyle(
-                                                    color: Colors.blue[700]),
-                                              ),
-                                              SizedBox(height: 10),
-                                              Text(
-                                                "Estado: ",
-                                                style: TextStyle(
-                                                    color: Colors.blue[700]),
-                                              ),
-                                              SizedBox(height: 10),
-                                              Text(
-                                                "Região: ",
-                                                style: TextStyle(
-                                                    color: Colors.blue[700]),
-                                              ),
-                                              SizedBox(height: 10),
-                                              Text(
-                                                "IBGE: ",
-                                                style: TextStyle(
-                                                    color: Colors.blue[700]),
-                                              ),
-                                              SizedBox(height: 10),
-                                              Text(
-                                                "GIA: ",
-                                                style: TextStyle(
-                                                    color: Colors.blue[700]),
-                                              ),
-                                              SizedBox(height: 10),
-                                              Text(
-                                                "DDD: ",
-                                                style: TextStyle(
-                                                    color: Colors.blue[700]),
-                                              ),
-                                              SizedBox(height: 10),
-                                              Text(
-                                                "SIAFI: ",
-                                                style: TextStyle(
-                                                    color: Colors.blue[700]),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
+                                        title: Text("CEP inválido"),
+                                        content: Text(
+                                            "O CEP deve conter exatamente 8 dígitos."),
                                         actions: [
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              TextButton(
-                                                onPressed: () {
-                                                  Navigator.pop(context);
-                                                },
-                                                child: Text(
-                                                  "Fechar",
-                                                  style: TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    color: Colors.red,
-                                                  ),
-                                                ),
-                                              ),
-                                              TextButton(
-                                                onPressed: () {},
-                                                style: ButtonStyle(
-                                                  backgroundColor:
-                                                      WidgetStateProperty.all<
-                                                              Color>(
-                                                          Colors.blue.shade600),
-                                                ),
-                                                child: Text(
-                                                  "Salvar",
-                                                  style: TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    color: Colors.white,
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                            },
+                                            child: Text("OK"),
                                           ),
                                         ],
                                       );
-                                    });
+                                    },
+                                  );
+                                }
                               } else {
-                                String uf = _estadoController.text;
-                                String cidade = _cidadeController.text;
-                                String logradouro = _logradouroController.text;
-                                print(
-                                    "Buscar Cidade: $uf, $cidade, $logradouro");
-                                showDialog(
+                                String uf =
+                                    _estadoController.text.toUpperCase();
+                                String cidade =
+                                    _cidadeController.text.toLowerCase();
+                                String logradouro =
+                                    _logradouroController.text.toLowerCase();
+
+                                setState(() {
+                                  loading = true;
+                                });
+
+                                try {
+                                  List<ViaCEPModel> enderecos =
+                                      await viaCEPRepository.consultarPorCidade(
+                                          uf, cidade, logradouro);
+                                  showDialog(
                                     context: context,
                                     barrierDismissible: false,
                                     builder: (BuildContext bc) {
+                                      return _buildResultDialog(enderecos);
+                                    },
+                                  );
+                                } catch (e) {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext bc) {
                                       return AlertDialog(
-                                        backgroundColor: Colors.amber[50],
-                                        title: Text(
-                                          "Resultado do CEP",
-                                          style: TextStyle(
-                                              color: Colors.blue[700]),
-                                        ),
-                                        content: SingleChildScrollView(
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              Text(
-                                                "CEP: ",
-                                                style: TextStyle(
-                                                    color: Colors.blue[700]),
-                                              ),
-                                              SizedBox(height: 10),
-                                              Text(
-                                                "Logradouro: ",
-                                                style: TextStyle(
-                                                    color: Colors.blue[700]),
-                                              ),
-                                              SizedBox(height: 10),
-                                              Text(
-                                                "Complemento: ",
-                                                style: TextStyle(
-                                                    color: Colors.blue[700]),
-                                              ),
-                                              SizedBox(height: 10),
-                                              Text(
-                                                "Unidade: ",
-                                                style: TextStyle(
-                                                    color: Colors.blue[700]),
-                                              ),
-                                              SizedBox(height: 10),
-                                              Text(
-                                                "Bairro: ",
-                                                style: TextStyle(
-                                                    color: Colors.blue[700]),
-                                              ),
-                                              SizedBox(height: 10),
-                                              Text(
-                                                "Localidade: ",
-                                                style: TextStyle(
-                                                    color: Colors.blue[700]),
-                                              ),
-                                              SizedBox(height: 10),
-                                              Text(
-                                                "UF: ",
-                                                style: TextStyle(
-                                                    color: Colors.blue[700]),
-                                              ),
-                                              SizedBox(height: 10),
-                                              Text(
-                                                "Estado: ",
-                                                style: TextStyle(
-                                                    color: Colors.blue[700]),
-                                              ),
-                                              SizedBox(height: 10),
-                                              Text(
-                                                "Região: ",
-                                                style: TextStyle(
-                                                    color: Colors.blue[700]),
-                                              ),
-                                              SizedBox(height: 10),
-                                              Text(
-                                                "IBGE: ",
-                                                style: TextStyle(
-                                                    color: Colors.blue[700]),
-                                              ),
-                                              SizedBox(height: 10),
-                                              Text(
-                                                "GIA: ",
-                                                style: TextStyle(
-                                                    color: Colors.blue[700]),
-                                              ),
-                                              SizedBox(height: 10),
-                                              Text(
-                                                "DDD: ",
-                                                style: TextStyle(
-                                                    color: Colors.blue[700]),
-                                              ),
-                                              SizedBox(height: 10),
-                                              Text(
-                                                "SIAFI: ",
-                                                style: TextStyle(
-                                                    color: Colors.blue[700]),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
+                                        title: Text("Erro"),
+                                        content: Text(
+                                            "Não foi possível consultar o endereço: $e"),
                                         actions: [
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              TextButton(
-                                                onPressed: () {
-                                                  Navigator.pop(context);
-                                                },
-                                                child: Text(
-                                                  "Fechar",
-                                                  style: TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    color: Colors.red,
-                                                  ),
-                                                ),
-                                              ),
-                                              TextButton(
-                                                onPressed: () {},
-                                                style: ButtonStyle(
-                                                  backgroundColor:
-                                                      WidgetStateProperty.all<
-                                                              Color>(
-                                                          Colors.blue.shade600),
-                                                ),
-                                                child: Text(
-                                                  "Salvar",
-                                                  style: TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    color: Colors.white,
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                            },
+                                            child: Text("OK"),
                                           ),
                                         ],
                                       );
-                                    });
+                                    },
+                                  );
+                                } finally {
+                                  setState(() {
+                                    loading = false;
+                                  });
+                                }
                               }
                             },
-                            child: Text(
-                              "Buscar",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold),
-                            ),
+                            child: loading
+                                ? SizedBox(
+                                    width: 24,
+                                    height: 24,
+                                    child: CircularProgressIndicator(
+                                      color: Colors.white,
+                                      strokeWidth: 3,
+                                    ),
+                                  )
+                                : Text(
+                                    "Buscar",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold),
+                                  ),
                           ),
                         ),
                       ],

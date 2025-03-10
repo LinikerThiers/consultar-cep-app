@@ -1,5 +1,5 @@
 import 'package:consultarcep/pages/busca_page.dart';
-import 'package:consultarcep/pages/historico_page.dart';
+import 'package:consultarcep/pages/salvos_page.dart';
 import 'package:flutter/material.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -29,7 +29,7 @@ class _MyHomePageState extends State<MyHomePage> {
             },
             children: [
               BuscaPage(),
-              HistoricoPage(),
+              SalvosPage(),
             ],
           )),
           Container(
@@ -59,8 +59,8 @@ class _MyHomePageState extends State<MyHomePage> {
                         icon: Icon(Icons.location_on),
                       ),
                       BottomNavigationBarItem(
-                        label: "Histórico",
-                        icon: Icon(Icons.history),
+                        label: "Salvos",
+                        icon: Icon(Icons.save_alt),
                       ),
                     ]),
               ),
