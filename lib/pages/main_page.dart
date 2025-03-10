@@ -47,7 +47,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: BottomNavigationBar(
                     backgroundColor: Colors.amber[600],
                     selectedItemColor: Colors.white,
-                    unselectedItemColor: Colors.blue[800],
+                    unselectedItemColor: Colors.amber[900],
                     type: BottomNavigationBarType.fixed,
                     onTap: (value) {
                       controller.jumpToPage(value);

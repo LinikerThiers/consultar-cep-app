@@ -2,6 +2,7 @@ import 'package:consultarcep/model/viacep_model.dart';
 import 'package:consultarcep/repository/viacep_repository.dart';
 import 'package:consultarcep/shared/widget/result_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class BuscaPage extends StatefulWidget {
   const BuscaPage({
@@ -167,7 +168,13 @@ class _BuscaPageState extends State<BuscaPage> {
                                   hintStyle: TextStyle(
                                     color: Colors.blue[700],
                                   ),
+                                  counterText: "",
                                 ),
+                                maxLength: 2, 
+                                inputFormatters: [
+                                  FilteringTextInputFormatter.allow(
+                                      RegExp(r'[A-Za-z]')),
+                                ],
                               ),
                               SizedBox(height: 10),
                               TextField(
