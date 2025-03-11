@@ -1,4 +1,5 @@
 import 'package:consultarcep/model/viacep_model.dart';
+import 'package:consultarcep/repository/enderecos_back4app_repository.dart';
 import 'package:flutter/material.dart';
 
 class ResultDialog extends StatefulWidget {
@@ -10,6 +11,9 @@ class ResultDialog extends StatefulWidget {
 }
 
 class _ResultDialogState extends State<ResultDialog> {
+  EnderecosBack4appRepository enderecosBack4appRepository =
+      EnderecosBack4appRepository();
+
   @override
   Widget build(BuildContext context) {
     List<ViaCEPModel> enderecos =
@@ -42,8 +46,38 @@ class _ResultDialogState extends State<ResultDialog> {
                           style: TextStyle(
                               color: Colors.white, fontWeight: FontWeight.bold),
                         ),
-                        onPressed: () {
-                          _salvarEndereco(endereco);
+                        onPressed: () async {
+                          bool sucesso = await _salvarEndereco(endereco);
+
+                          if (mounted) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                  sucesso
+                                      ? "Endereço salvo com sucesso!"
+                                      : "Erro ao salvar o endereço!",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold),
+                                  textAlign: TextAlign.center,
+                                ),
+                                backgroundColor:
+                                    sucesso ? Colors.green : Colors.red,
+                                behavior: SnackBarBehavior.floating,
+                                margin: EdgeInsets.all(16),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                duration: Duration(seconds: 2),
+                              ),
+                            );
+
+                            await Future.delayed(Duration(seconds: 2));
+
+                            if (mounted) {
+                              Navigator.pop(context);
+                            }
+                          }
                         },
                       ),
                     ),
@@ -94,5 +128,12 @@ class _ResultDialogState extends State<ResultDialog> {
     );
   }
 
-  void _salvarEndereco(ViaCEPModel endereco) {}
+  Future<bool> _salvarEndereco(ViaCEPModel endereco) async {
+    try {
+      await enderecosBack4appRepository.adicionarEndereco(endereco);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
 }
