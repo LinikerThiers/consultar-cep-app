@@ -191,14 +191,15 @@ class _SalvosPageState extends State<SalvosPage> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    "Detalhes do Endereço",
-                    style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.blue[700]),
+                  Expanded(
+                    child: Text(
+                      "Detalhes do Endereço",
+                      style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.blue[700]),
+                    ),
                   ),
                   IconButton(
                     icon: Icon(
