@@ -9,7 +9,8 @@ Este projeto é uma aplicação Flutter que permite consultar endereços a parti
 <img src="https://github.com/user-attachments/assets/2c43232e-cc26-4ae0-8d88-047b3ef5ea44" width="200">
 <img src="https://github.com/user-attachments/assets/ff0e303d-2387-45d0-9dbd-79223415f3a9" width="200">
 <img src="https://github.com/user-attachments/assets/98a1a8a8-82ac-4d23-a59a-9072dc61e3af" width="200">
-<img src="https://github.com/user-attachments/assets/b37cbe7e-e887-449b-abee-683008bcbe29" width="200">
+<img src="https://github.com/user-attachments/assets/e3d3dbc8-8f1c-4b28-9254-adad09b9b16f" width="200">
+<img src="https://github.com/user-attachments/assets/2967075c-4f69-4598-ac0c-16f85ecf1f9f" width="200">
 <img src="https://github.com/user-attachments/assets/57327f97-9e00-4766-a48e-274707b41cdd" width="200">
 
 ## Funcionalidades
@@ -17,7 +18,7 @@ Este projeto é uma aplicação Flutter que permite consultar endereços a parti
 - **Consulta por CEP**: Busca um endereço completo a partir de um CEP.
 - **Consulta por Endereço**: Busca CEPs a partir de um endereço (cidade, estado e logradouro).
 - **Salvar Endereços**: Salva os endereços consultados em um banco de dados na nuvem.
-- **Listar Endereços Salvos**: Exibe uma lista de endereços salvos, com a possibilidade de remover ou visualizar detalhes.
+- **Listar Endereços Salvos**: Exibe uma lista de endereços salvos, com a possibilidade de remover, editar ou visualizar detalhes.
 
 ## APIs Utilizadas
 
@@ -36,7 +37,7 @@ O [Back4App](https://www.back4app.com/) é uma plataforma que oferece um banco d
 - `splash_screen.dart`: Tela de splash que exibe uma logo e redireciona para a tela principal após 3 segundos.
 - `main_page.dart`: Tela principal que gerencia a navegação entre as páginas de busca e endereços salvos.
 - `busca_page.dart`: Tela para realizar consultas de CEP ou endereço.
-- `salvos_page.dart`: Tela para listar os endereços salvos, com opções de remoção e visualização de detalhes.
+- `salvos_page.dart`: Tela para listar os endereços salvos, com opções de remoção, edição e visualização de detalhes.
 - `viacep_model.dart`: Modelo de dados para os endereços retornados pela API ViaCEP.
 - `enderecos_back4app_model.dart`: Modelo de dados para os endereços salvos no Back4App.
 - `back4app_custom_dio.dart`: Configuração do cliente HTTP (Dio) para interagir com o Back4App.
@@ -129,3 +130,4 @@ Ao abrir o app, você será redirecionado para a tela de busca após 3 segundos.
 
 - Na aba "Salvos", você pode visualizar todos os endereços salvos.
 - Clique em um endereço para ver os detalhes ou deslize para a esquerda para removê-lo.
+- Clique no ícone de editar para editar um endereço desejado.
