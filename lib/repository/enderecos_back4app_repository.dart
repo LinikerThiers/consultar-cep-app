@@ -35,6 +35,15 @@ class EnderecosBack4appRepository {
     }
   }
 
+  Future<void> atualizar(EnderecoBack4appModel endereco) async {
+    try {
+      await _customDio.dio.put("/Enderecos/${endereco.objectId}",
+          data: endereco.atualizarEndpoint());
+    } catch (e) {
+      throw e;
+    }
+  }
+
   Future<bool> remover(String objectId) async {
     try {
       await _customDio.dio.delete("/Enderecos/$objectId");

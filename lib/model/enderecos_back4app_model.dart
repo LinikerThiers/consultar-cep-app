@@ -112,4 +112,13 @@ class EnderecoBack4appModel {
     data['siafi'] = siafi;
     return data;
   }
+
+  Map<String, dynamic> atualizarEndpoint() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['logradouro'] = logradouro;
+    data['complemento'] = complemento;
+    data['bairro'] = bairro;
+    return data;
+  }
+
 }

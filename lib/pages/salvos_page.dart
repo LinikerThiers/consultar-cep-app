@@ -21,14 +21,20 @@ class _SalvosPageState extends State<SalvosPage> {
     obterEnderecos();
   }
 
-  void obterEnderecos() async {
+  Future<void> obterEnderecos() async {
     setState(() {
       carregando = true;
     });
-    _enderecosBack4app = await enderecosBack4appRepository.obterEnderecos();
-    setState(() {
-      carregando = false;
-    });
+
+    try {
+      _enderecosBack4app = await enderecosBack4appRepository.obterEnderecos();
+    } catch (e) {
+      print("Erro ao obter endereços: $e");
+    } finally {
+      setState(() {
+        carregando = false;
+      });
+    }
   }
 
   @override
@@ -147,8 +153,17 @@ class _SalvosPageState extends State<SalvosPage> {
                                           color: Colors.white,
                                           fontWeight: FontWeight.bold),
                                     ),
-                                    const Icon(Icons.location_on,
-                                        color: Colors.white),
+                                    Row(
+                                      children: [
+                                        InkWell(
+                                            onTap: () {
+                                              _mostrarEditarEndereco(
+                                                  context, endereco);
+                                            },
+                                            child: Icon(Icons.edit,
+                                                color: Colors.white)),
+                                      ],
+                                    ),
                                   ],
                                 ),
                                 subtitle: Text(
@@ -254,6 +269,189 @@ class _SalvosPageState extends State<SalvosPage> {
                 height: 35,
               ),
             ],
+          ),
+        );
+      },
+    );
+  }
+
+  void _mostrarEditarEndereco(
+      BuildContext context, EnderecoBack4appModel endereco) {
+    final logradouroController =
+        TextEditingController(text: endereco.logradouro);
+    final complementoController =
+        TextEditingController(text: endereco.complemento);
+    final bairroController = TextEditingController(text: endereco.bairro);
+
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      isDismissible: false,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (context) {
+        return Padding(
+          padding: EdgeInsets.only(
+            bottom: MediaQuery.of(context).viewInsets.bottom,
+          ),
+          child: SingleChildScrollView(
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.amber[50],
+                borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+              ),
+              padding: EdgeInsets.all(20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          "Editar Endereço",
+                          style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.blue[700]),
+                        ),
+                      ),
+                      IconButton(
+                          icon: Icon(
+                            Icons.close,
+                            color: Colors.blue[700],
+                          ),
+                          onPressed: () async {
+                            Navigator.pop(context);
+                          }),
+                    ],
+                  ),
+                  SizedBox(height: 10),
+                  TextField(
+                    controller: logradouroController,
+                    style: TextStyle(
+                      color: Colors.blue[700],
+                    ),
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Colors.blue[50],
+                      contentPadding: EdgeInsets.only(top: 0),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                        borderSide: BorderSide.none,
+                      ),
+                      prefixIcon: Icon(
+                        Icons.location_on,
+                        color: Colors.blue[700],
+                      ),
+                      hintText: "Logradouro",
+                      hintStyle: TextStyle(
+                        color: Colors.blue[700],
+                      ),
+                      counterText: "",
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  TextField(
+                    controller: complementoController,
+                    style: TextStyle(
+                      color: Colors.blue[700],
+                    ),
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Colors.blue[50],
+                      contentPadding: EdgeInsets.only(top: 0),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                        borderSide: BorderSide.none,
+                      ),
+                      prefixIcon: Icon(
+                        Icons.apartment,
+                        color: Colors.blue[700],
+                      ),
+                      hintText: "Complemento",
+                      hintStyle: TextStyle(
+                        color: Colors.blue[700],
+                      ),
+                      counterText: "",
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  TextField(
+                    controller: bairroController,
+                    style: TextStyle(
+                      color: Colors.blue[700],
+                    ),
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Colors.blue[50],
+                      contentPadding: EdgeInsets.only(top: 0),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                        borderSide: BorderSide.none,
+                      ),
+                      prefixIcon: Icon(
+                        Icons.location_city,
+                        color: Colors.blue[700],
+                      ),
+                      hintText: "Bairro",
+                      hintStyle: TextStyle(
+                        color: Colors.blue[700],
+                      ),
+                      counterText: "",
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  Center(
+                    child: ElevatedButton(
+                      onPressed: () async {
+                        endereco.logradouro = logradouroController.text;
+                        endereco.complemento = complementoController.text;
+                        endereco.bairro = bairroController.text;
+
+                        Navigator.pop(context);
+
+                        try {
+                          await enderecosBack4appRepository.atualizar(endereco);
+                          await obterEnderecos();
+                          if (mounted) {
+                            setState(() {});
+                          }
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                                content:
+                                    Text("Endereço atualizado com sucesso!")),
+                          );
+                        } catch (e) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                                content:
+                                    Text("Erro ao atualizar endereço: $e")),
+                          );
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.blue[700],
+                        foregroundColor: Colors.white,
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                      ),
+                      child: Text(
+                        "Salvar Alterações",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                ],
+              ),
+            ),
           ),
         );
       },
